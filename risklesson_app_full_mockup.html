@@ -1,0 +1,251 @@
+<h2 class="sr-only">Макет приложения RiskLesson: вход, форма подачи риска инициатором, дашборд, реестр рисков с подсветкой нового риска, реестр уроков</h2>
+<div style="font-family: var(--font-sans);">
+<div style="display:flex;gap:4px;border-bottom:0.5px solid var(--border);margin-bottom:16px;overflow-x:auto;">
+  <button class="mtab" data-t="0" style="border:none;background:none;padding:8px 4px;margin-right:18px;font-size:13px;cursor:pointer;color:var(--text-primary);border-bottom:2px solid var(--border-accent);font-weight:500;white-space:nowrap;">Вход</button>
+  <button class="mtab" data-t="1" style="border:none;background:none;padding:8px 4px;margin-right:18px;font-size:13px;cursor:pointer;color:var(--text-secondary);border-bottom:2px solid transparent;white-space:nowrap;">Дашборд</button>
+  <button class="mtab" data-t="2" style="border:none;background:none;padding:8px 4px;margin-right:18px;font-size:13px;cursor:pointer;color:var(--text-secondary);border-bottom:2px solid transparent;white-space:nowrap;">Реестр рисков</button>
+  <button class="mtab" data-t="3" style="border:none;background:none;padding:8px 4px;font-size:13px;cursor:pointer;color:var(--text-secondary);border-bottom:2px solid transparent;white-space:nowrap;">Реестр уроков</button>
+</div>
+
+<div id="mp-0">
+  <div id="loginBox" style="max-width:360px;margin:0 auto;background:var(--surface-1);border-radius:12px;padding:1.5rem;">
+    <p style="font-size:16px;font-weight:500;margin:0 0 4px;">RiskLesson</p>
+    <p style="font-size:12px;color:var(--text-secondary);margin:0 0 16px;">Идентификация пользователя</p>
+    <label style="font-size:12px;color:var(--text-secondary);">Имя</label>
+    <input id="fname" placeholder="Иван" style="width:100%;margin:4px 0 10px;"/>
+    <label style="font-size:12px;color:var(--text-secondary);">Фамилия</label>
+    <input id="lname" placeholder="Петров" style="width:100%;margin:4px 0 14px;"/>
+    <p style="font-size:12px;color:var(--text-secondary);margin:0 0 8px;">Роль</p>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+      <div class="rolecard" data-role="rm" style="border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 12px;cursor:pointer;">
+        <div style="font-size:13px;font-weight:500;">Риск-менеджер</div>
+        <div style="font-size:12px;color:var(--text-secondary);">Владелец реестра рисков проекта</div>
+      </div>
+      <div class="rolecard" data-role="init" style="border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 12px;cursor:pointer;">
+        <div style="font-size:13px;font-weight:500;">Инициатор</div>
+        <div style="font-size:12px;color:var(--text-secondary);">Предлагает риски по проекту</div>
+      </div>
+    </div>
+    <p id="loginErr" style="display:none;font-size:12px;color:var(--text-danger);margin:0 0 8px;">Заполните имя и фамилию.</p>
+  </div>
+  <div id="sppModal" style="display:none;min-height:340px;background:rgba(0,0,0,0.45);align-items:center;justify-content:center;border-radius:12px;margin-top:12px;padding:20px;">
+    <div style="background:var(--surface-2);border-radius:12px;padding:1.25rem;max-width:280px;width:100%;">
+      <p style="font-size:14px;font-weight:500;margin:0 0 10px;">Введите СПП проекта</p>
+      <input id="sppInput" placeholder="19-1991" maxlength="7" style="width:100%;margin-bottom:6px;"/>
+      <p id="sppErr" style="display:none;font-size:12px;color:var(--text-danger);margin:0 0 8px;">Нужно ровно 6 цифр.</p>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button id="sppCancel" style="flex:1;">Отмена</button>
+        <button id="sppOk" style="flex:1;">Войти в систему</button>
+      </div>
+    </div>
+  </div>
+  <div id="initForm" style="display:none;max-width:400px;margin:0 auto;background:var(--surface-1);border-radius:12px;padding:1.5rem;">
+    <p style="font-size:16px;font-weight:500;margin:0 0 4px;">Подать риск</p>
+    <p id="initAuto" style="font-size:12px;color:var(--text-secondary);margin:0 0 14px;"></p>
+    <label style="font-size:12px;color:var(--text-secondary);">Категория риска</label>
+    <select id="ifCat" style="width:100%;margin:4px 0 10px;">
+      <option value="">Выберите категорию</option>
+      <option>Технологические</option><option>Технические</option><option>Процессные</option>
+      <option>Регуляторные</option><option>ПИР</option><option>СМР/ПНР</option><option>Снабжение</option><option>Экономические</option>
+    </select>
+    <label style="font-size:12px;color:var(--text-secondary);">Наименование риска</label>
+    <input id="ifTitle" placeholder="Короткий самодостаточный заголовок" style="width:100%;margin:4px 0 10px;"/>
+    <label style="font-size:12px;color:var(--text-secondary);">Риск-событие</label>
+    <input id="ifEvent" placeholder="Что именно может произойти" style="width:100%;margin:4px 0 10px;"/>
+    <label style="font-size:12px;color:var(--text-secondary);">Прямое следствие</label>
+    <input id="ifConsequence" placeholder="К чему это приведёт для проекта" style="width:100%;margin:4px 0 10px;"/>
+    <label style="font-size:12px;color:var(--text-secondary);">Предполагаемый владелец (необязательно)</label>
+    <input id="ifOwner" placeholder="ФИО" style="width:100%;margin:4px 0 12px;"/>
+    <p id="ifErr" style="display:none;font-size:12px;color:var(--text-danger);margin:0 0 8px;">Заполните категорию, наименование, риск-событие и следствие.</p>
+    <button id="ifSubmit" style="width:100%;">Отправить риск</button>
+  </div>
+</div>
+
+<div id="mp-1" style="display:none;">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin-bottom:16px;">
+    <div style="background:var(--surface-1);border-radius:var(--radius);padding:0.8rem;"><p style="font-size:11px;color:var(--text-secondary);margin:0 0 4px;">Вне толеранса</p><p style="font-size:20px;font-weight:500;margin:0;color:var(--text-danger);">4</p></div>
+    <div style="background:var(--surface-1);border-radius:var(--radius);padding:0.8rem;"><p style="font-size:11px;color:var(--text-secondary);margin:0 0 4px;">Совокупный EL</p><p style="font-size:20px;font-weight:500;margin:0;">186 млн ₽</p></div>
+    <div style="background:var(--surface-1);border-radius:var(--radius);padding:0.8rem;"><p style="font-size:11px;color:var(--text-secondary);margin:0 0 4px;">Высокий приоритет</p><p style="font-size:20px;font-weight:500;margin:0;color:var(--text-danger);">3</p></div>
+    <div style="background:var(--surface-1);border-radius:var(--radius);padding:0.8rem;"><p style="font-size:11px;color:var(--text-secondary);margin:0 0 4px;">Просрочено мер.</p><p style="font-size:20px;font-weight:500;margin:0;color:var(--text-warning);">2</p></div>
+    <div style="background:var(--surface-1);border-radius:var(--radius);padding:0.8rem;"><p style="font-size:11px;color:var(--text-secondary);margin:0 0 4px;">Новые за период</p><p style="font-size:20px;font-weight:500;margin:0;" id="newCountMetric">5</p></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+    <div><div style="position:relative;height:180px;"><canvas id="donutChart" role="img" aria-label="Структура рисков по статусам">Идентификация, Анализ, Управление, Мониторинг</canvas></div></div>
+    <div><div style="position:relative;height:180px;"><canvas id="barChart" role="img" aria-label="Риски по категориям">Категории рисков</canvas></div></div>
+  </div>
+  <p style="font-size:12px;color:var(--text-secondary);margin:0 0 6px;">Матрица рисков P × I</p>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:16px;max-width:280px;">
+    <div style="background:var(--bg-success);color:var(--text-success);font-size:11px;padding:10px;text-align:center;border-radius:4px;">L · 1</div>
+    <div style="background:var(--bg-success);color:var(--text-success);font-size:11px;padding:10px;text-align:center;border-radius:4px;">L · 2</div>
+    <div style="background:var(--bg-warning);color:var(--text-warning);font-size:11px;padding:10px;text-align:center;border-radius:4px;">M · 3</div>
+    <div style="background:var(--bg-success);color:var(--text-success);font-size:11px;padding:10px;text-align:center;border-radius:4px;">L · 1</div>
+    <div style="background:var(--bg-warning);color:var(--text-warning);font-size:11px;padding:10px;text-align:center;border-radius:4px;">M · 2</div>
+    <div style="background:var(--bg-danger);color:var(--text-danger);font-size:11px;padding:10px;text-align:center;border-radius:4px;">H · 3</div>
+    <div style="background:var(--bg-warning);color:var(--text-warning);font-size:11px;padding:10px;text-align:center;border-radius:4px;">M · 1</div>
+    <div style="background:var(--bg-danger);color:var(--text-danger);font-size:11px;padding:10px;text-align:center;border-radius:4px;">H · 2</div>
+    <div style="background:var(--bg-danger);color:var(--text-danger);font-size:11px;padding:10px;text-align:center;border-radius:4px;">H · 4</div>
+  </div>
+  <p style="font-size:12px;color:var(--text-secondary);margin:0 0 6px;">Просроченные мероприятия</p>
+  <div style="font-size:13px;display:flex;justify-content:space-between;padding:6px 0;border-top:0.5px solid var(--border);">Проверка герметичности — Конвертер<span style="color:var(--text-danger);">+4 дня</span></div>
+  <div style="font-size:13px;display:flex;justify-content:space-between;padding:6px 0;border-top:0.5px solid var(--border);">Замена огнеупоров — Домна №2<span style="color:var(--text-danger);">+1 день</span></div>
+</div>
+
+<div id="mp-2" style="display:none;">
+  <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+    <div style="position:relative;flex:1;min-width:160px;"><i class="ti ti-search" style="position:absolute;left:10px;top:9px;font-size:16px;color:var(--text-muted);" aria-hidden="true"></i><input id="rSearch" placeholder="Поиск риска" style="padding-left:32px;width:100%;"/></div>
+    <select id="rCat" style="min-width:160px;"><option>Все категории</option><option>Технологические</option><option>Технические</option><option>Процессные</option><option>Регуляторные</option><option>ПИР</option><option>СМР/ПНР</option><option>Снабжение</option><option>Экономические</option></select>
+  </div>
+  <div id="riskList"></div>
+</div>
+
+<div id="mp-3" style="display:none;">
+  <div style="position:relative;margin-bottom:12px;"><i class="ti ti-search" style="position:absolute;left:10px;top:9px;font-size:16px;color:var(--text-muted);" aria-hidden="true"></i><input id="lSearch" placeholder="Поиск урока или хештега" style="padding-left:32px;width:100%;"/></div>
+  <div id="lesList"></div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+function switchTab(i){
+  document.querySelectorAll('.mtab').forEach((b,idx)=>{
+    b.style.color=idx==i?'var(--text-primary)':'var(--text-secondary)';
+    b.style.borderBottom=idx==i?'2px solid var(--border-accent)':'2px solid transparent';
+    b.style.fontWeight=idx==i?'500':'400';
+  });
+  for(let k=0;k<4;k++){document.getElementById('mp-'+k).style.display=(k==i)?'block':'none';}
+}
+document.querySelectorAll('.mtab').forEach(b=>b.addEventListener('click',()=>switchTab(parseInt(b.getAttribute('data-t')))));
+
+let selectedRole=null, sessionName='';
+document.querySelectorAll('.rolecard').forEach(c=>{
+  c.addEventListener('click',()=>{
+    const fn=document.getElementById('fname').value.trim();
+    const ln=document.getElementById('lname').value.trim();
+    if(!fn||!ln){
+      document.getElementById('loginErr').style.display='block';
+      (fn?document.getElementById('lname'):document.getElementById('fname')).focus();
+      return;
+    }
+    document.getElementById('loginErr').style.display='none';
+    document.querySelectorAll('.rolecard').forEach(x=>x.style.borderColor='var(--border)');
+    c.style.borderColor='var(--border-accent)';
+    selectedRole=c.getAttribute('data-role');
+    document.getElementById('sppModal').style.display='flex';
+  });
+});
+document.getElementById('sppCancel').addEventListener('click',()=>{document.getElementById('sppModal').style.display='none';});
+document.getElementById('sppInput').addEventListener('input',(e)=>{
+  let v=e.target.value.replace(/[^0-9]/g,'').slice(0,6);
+  if(v.length>2){v=v.slice(0,2)+'-'+v.slice(2);}
+  e.target.value=v;
+});
+document.getElementById('sppOk').addEventListener('click',()=>{
+  const digits=document.getElementById('sppInput').value.replace(/[^0-9]/g,'');
+  if(digits.length!==6){document.getElementById('sppErr').style.display='block';return;}
+  document.getElementById('sppErr').style.display='none';
+  document.getElementById('sppModal').style.display='none';
+  const fn=document.getElementById('fname').value.trim();
+  const ln=document.getElementById('lname').value.trim();
+  sessionName=fn+' '+ln;
+  const spp=document.getElementById('sppInput').value;
+  if(selectedRole==='rm'){
+    setTimeout(()=>switchTab(1),300);
+  } else {
+    document.getElementById('loginBox').style.display='none';
+    document.getElementById('initForm').style.display='block';
+    document.getElementById('initAuto').textContent='Автор: '+sessionName+' · дата: сегодня · СПП: '+spp+' · статус: Идентификация';
+  }
+});
+document.getElementById('ifSubmit').addEventListener('click',()=>{
+  const cat=document.getElementById('ifCat').value;
+  const title=document.getElementById('ifTitle').value.trim();
+  const event=document.getElementById('ifEvent').value.trim();
+  const cons=document.getElementById('ifConsequence').value.trim();
+  const owner=document.getElementById('ifOwner').value.trim();
+  if(!cat||!title||!event||!cons){document.getElementById('ifErr').style.display='block';return;}
+  document.getElementById('ifErr').style.display='none';
+  const initials=owner?owner.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase():'—';
+  risks.unshift({t:title,cat:cat,status:'Идентификация',light:'yellow',owner:initials,rra:'—',el:'—',isNew:true,acts:[],event:event,cons:cons,author:sessionName});
+  renderRiskList();
+  switchTab(2);
+});
+
+new Chart(document.getElementById('donutChart'),{type:'doughnut',data:{labels:['Идентификация','Анализ и оценка','Управление','Мониторинг'],datasets:[{data:[4,3,4,1],backgroundColor:['#898781','#eda100','#2a78d6','#0ca30c']}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{boxWidth:10,font:{size:10}}}}}});
+new Chart(document.getElementById('barChart'),{type:'bar',data:{labels:['Технолог.','Технич.','Процесс.','Снабж.'],datasets:[{label:'Риски',data:[5,3,2,2],backgroundColor:'#2a78d6',borderRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}}}}});
+
+const risks=[
+ {t:'Разгерметизация трубопровода',cat:'Технологические',status:'Управление',light:'red',owner:'ИП',rra:'H',el:'42 млн ₽',acts:[{n:'Внеплановая проверка герметичности',type:'превентивная',resp:'Смирнов А.',st:'Просрочено'},{n:'Замена уплотнений',type:'реагирования',resp:'Козлов Д.',st:'В работе'}]},
+ {t:'Задержка поставки огнеупоров',cat:'Снабжение',status:'Мониторинг и Контроль',light:'blue',owner:'СМ',rra:'M',el:'11 млн ₽',acts:[{n:'Альтернативный поставщик',type:'превентивная',resp:'Волкова Е.',st:'Выполнено'}]},
+ {t:'Отклонение химсостава плавки',cat:'Процессные',status:'Идентификация',light:'yellow',owner:'КВ',rra:'L',el:'3 млн ₽',acts:[]}
+];
+function statusColor(s){return s==='Идентификация'?'var(--text-secondary)':s==='Анализ и оценка'?'var(--text-warning)':s==='Управление'?'var(--text-accent)':'var(--text-success)';}
+function lightColor(l){return l==='red'?'var(--fill-danger,#e24b4a)':l==='blue'?'var(--fill-accent,#2a78d6)':l==='green'?'var(--fill-success,#0ca30c)':l==='grey'?'var(--text-muted)':'var(--fill-warning,#eda100)';}
+function renderRiskList(){
+  const box=document.getElementById('riskList');box.innerHTML='';
+  risks.forEach((r,i)=>{
+    const el=document.createElement('div');
+    const newStyle=r.isNew?'border:2px solid var(--border-accent);':'border:0.5px solid var(--border);';
+    el.style.cssText=newStyle+'border-radius:var(--radius);padding:10px 12px;margin-bottom:8px;';
+    let extra=r.isNew?'<div style="font-size:12px;color:var(--text-secondary);padding:8px 0 0;border-top:0.5px solid var(--border);margin-top:8px;"><span style="color:var(--text-primary);">Риск-событие: </span>'+r.event+'<br/><span style="color:var(--text-primary);">Следствие: </span>'+r.cons+'<br/><span style="color:var(--text-primary);">Автор: </span>'+r.author+'</div>':'';
+    let actsHtml=r.acts.length?r.acts.map(a=>'<div style="display:flex;justify-content:space-between;font-size:12px;padding:5px 0;border-top:0.5px solid var(--border);"><span>'+a.n+' <span style="color:var(--text-muted);">('+a.type+')</span></span><span style="color:var(--text-secondary);">'+a.resp+' · '+a.st+'</span></div>').join(''):'<div style="font-size:12px;color:var(--text-muted);padding:6px 0;">Мероприятий пока нет.</div>';
+    el.innerHTML='<div class="rHead" data-i="'+i+'" style="display:flex;align-items:center;gap:10px;cursor:pointer;">'+
+      '<span style="width:8px;height:8px;border-radius:50%;background:'+lightColor(r.light)+';flex-shrink:0;"></span>'+
+      '<div style="flex:1;"><div style="font-size:14px;">'+r.t+(r.isNew?' <span style="background:var(--bg-accent);color:var(--text-accent);font-size:10px;padding:2px 6px;border-radius:8px;">Новый</span>':'')+'</div><div style="font-size:12px;color:var(--text-secondary);">'+r.cat+' · RRA '+r.rra+' · EL '+r.el+'</div></div>'+
+      '<div style="width:22px;height:22px;border-radius:50%;background:var(--bg-accent);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--text-accent);">'+r.owner+'</div>'+
+      '<span style="font-size:11px;color:'+statusColor(r.status)+';min-width:100px;text-align:right;">'+r.status+'</span>'+
+      '<i class="ti ti-chevron-down" style="font-size:16px;" aria-hidden="true"></i></div>'+
+      '<div id="rAcc-'+i+'" style="display:none;margin-top:8px;">'+extra+actsHtml+'</div>';
+    box.appendChild(el);
+  });
+  document.querySelectorAll('.rHead').forEach(h=>h.addEventListener('click',()=>{
+    const i=h.getAttribute('data-i');const a=document.getElementById('rAcc-'+i);
+    a.style.display=a.style.display==='none'?'block':'none';
+  }));
+}
+renderRiskList();
+function filterRisks(){
+  const q=document.getElementById('rSearch').value.toLowerCase();
+  const c=document.getElementById('rCat').value;
+  document.querySelectorAll('#riskList > div').forEach((row,idx)=>{
+    const r=risks[idx];
+    row.style.display=(r.t.toLowerCase().includes(q)&&(c==='Все категории'||r.cat===c))?'block':'none';
+  });
+}
+document.getElementById('rSearch').addEventListener('input',filterRisks);
+document.getElementById('rCat').addEventListener('change',filterRisks);
+
+const lessons=[
+ {id:'L-01',t:'Раннее обнаружение утечки снижает простой на 30%',cat:'Технологические',phase:'Эксплуатация',cause:'Износ уплотнений не выявлялся плановыми осмотрами',lesson:'Периодичность осмотра критичных узлов должна опираться на наработку, а не на календарь',action:'Ввести датчик-индикатор износа с автоматическим алертом',tags:['#герметичность','#конвертер']},
+ {id:'L-02',t:'Единый чек-лист приёмки снижает риск срыва поставки',cat:'Снабжение',phase:'Закупки',cause:'Разные критерии приёмки у разных поставщиков',lesson:'Стандартизированный входной контроль сокращает время простоя из-за брака сырья',action:'Утвердить единый чек-лист приёмки огнеупоров',tags:['#снабжение','#огнеупоры']}
+];
+function renderLessons(){
+  const box=document.getElementById('lesList');box.innerHTML='';
+  lessons.forEach((l,i)=>{
+    const el=document.createElement('div');
+    el.style.cssText='border:0.5px solid var(--border);border-radius:var(--radius);padding:10px 12px;margin-bottom:8px;';
+    el.innerHTML='<div class="lHead" data-i="'+i+'" style="display:flex;align-items:center;gap:10px;cursor:pointer;">'+
+      '<span style="font-size:11px;color:var(--text-muted);min-width:34px;">'+l.id+'</span>'+
+      '<div style="flex:1;"><div style="font-size:14px;">'+l.t+'</div><div style="font-size:12px;color:var(--text-secondary);">'+l.cat+' · '+l.phase+'</div></div>'+
+      '<i class="ti ti-chevron-down" style="font-size:16px;" aria-hidden="true"></i></div>'+
+      '<div id="lAcc-'+i+'" style="display:none;margin-top:8px;font-size:12px;color:var(--text-secondary);border-top:0.5px solid var(--border);padding-top:8px;">'+
+      '<p style="margin:0 0 6px;"><span style="color:var(--text-primary);">Корневая причина: </span>'+l.cause+'</p>'+
+      '<p style="margin:0 0 6px;"><span style="color:var(--text-primary);">Выученный урок: </span>'+l.lesson+'</p>'+
+      '<p style="margin:0 0 8px;"><span style="color:var(--text-primary);">Рекомендация: </span>'+l.action+'</p>'+
+      '<div style="display:flex;gap:6px;flex-wrap:wrap;">'+l.tags.map(t=>'<span style="background:var(--surface-1);padding:2px 8px;border-radius:10px;font-size:11px;">'+t+'</span>').join('')+'</div></div>';
+    box.appendChild(el);
+  });
+  document.querySelectorAll('.lHead').forEach(h=>h.addEventListener('click',()=>{
+    const i=h.getAttribute('data-i');const a=document.getElementById('lAcc-'+i);
+    a.style.display=a.style.display==='none'?'block':'none';
+  }));
+}
+renderLessons();
+document.getElementById('lSearch').addEventListener('input',()=>{
+  const q=document.getElementById('lSearch').value.toLowerCase();
+  document.querySelectorAll('#lesList > div').forEach((row,idx)=>{
+    const l=lessons[idx];
+    const hay=(l.t+' '+l.tags.join(' ')).toLowerCase();
+    row.style.display=hay.includes(q)?'block':'none';
+  });
+});
+</script>
